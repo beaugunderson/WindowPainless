@@ -3,3 +3,8 @@
 ################################################################################
 
 /WindowPainless/obj/Debug
+/.vs/WindowPainless/v14
+/packages
+/WindowPainless/bin/Debug
+/WindowPainless/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+/WindowPainless/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
