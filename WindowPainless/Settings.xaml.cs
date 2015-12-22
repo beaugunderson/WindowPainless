@@ -50,31 +50,29 @@ namespace WindowPainless
 
         private readonly Dictionary<uint, Orientation> _virtualKeyToOrientation = new Dictionary<uint, Orientation>()
         {
-            {VK_NUMPAD7, Orientation.TopLeft},
-            {VK_NUMPAD8, Orientation.TopCenter},
-            {VK_NUMPAD9, Orientation.TopRight},
-
-            {VK_NUMPAD4, Orientation.MiddleLeft},
-            {VK_NUMPAD5, Orientation.MiddleCenter},
-            {VK_NUMPAD6, Orientation.MiddleRight},
-
-            {VK_NUMPAD1, Orientation.BottomLeft},
-            {VK_NUMPAD2, Orientation.BottomCenter},
-            {VK_NUMPAD3, Orientation.BottomRight}
+            { VK_NUMPAD7, Orientation.TopLeft },
+            { VK_NUMPAD8, Orientation.TopCenter },
+            { VK_NUMPAD9, Orientation.TopRight },
+            { VK_NUMPAD4, Orientation.MiddleLeft },
+            { VK_NUMPAD5, Orientation.MiddleCenter },
+            { VK_NUMPAD6, Orientation.MiddleRight },
+            { VK_NUMPAD1, Orientation.BottomLeft },
+            { VK_NUMPAD2, Orientation.BottomCenter },
+            { VK_NUMPAD3, Orientation.BottomRight }
         };
 
         private static bool IsOdd(int number) => number % 2 != 0;
 
         private struct Grid
         {
-            public int Width { get; }
-            public int Height { get; }
-
             public Grid(int width, int height)
             {
                 Width = width;
                 Height = height;
             }
+
+            public int Width { get; }
+            public int Height { get; }
 
             public override string ToString()
                 => $"Grid: {Width}x{Height}";
@@ -82,9 +80,6 @@ namespace WindowPainless
 
         private struct Division
         {
-            public int X { get; }
-            public int Y { get; }
-
             private Grid _grid;
 
             public Division(Grid grid, int x, int y)
@@ -94,6 +89,9 @@ namespace WindowPainless
                 X = x;
                 Y = y;
             }
+
+            public int X { get; }
+            public int Y { get; }
 
             public int Width => _grid.Width;
             public int Height => _grid.Height;
@@ -250,7 +248,7 @@ namespace WindowPainless
         }
 
         private static void LogRect(string prefix, InteropRectangle rect)
-            => Console.WriteLine($"{prefix + ":",-15} {rect.Left,-5} {rect.Top,-5} {rect.Right,-5} {rect.Bottom,-5}");
+            => Console.WriteLine($"{prefix + ":", -15} {rect.Left, -5} {rect.Top, -5} {rect.Right, -5} {rect.Bottom, -5}");
 
         private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
@@ -312,7 +310,6 @@ namespace WindowPainless
                 MaximizeWindow(foregroundWindow);
             }
 
-            #region Logging
             Console.WriteLine($"Orientation: {orientation}");
             Console.WriteLine(division);
             Console.WriteLine(bounds);
@@ -333,7 +330,6 @@ namespace WindowPainless
             LogRect("difference", bounds - afterExtendedFrameRect);
 
             Console.WriteLine();
-            #endregion
 
             handled = true;
 
