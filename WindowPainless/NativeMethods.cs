@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace WindowPainless
 {
@@ -60,6 +61,59 @@ namespace WindowPainless
             return result;
         }
 
+        public static void ResizeForegroundWindow(Division division)
+        {
+            var foregroundWindow = GetForegroundWindow();
+
+            // Normalizing here seems to affect the extended frame if the window was previously in the maximized state
+            NormalizeWindow(foregroundWindow);
+
+            var windowRect = GetWindowRect(foregroundWindow);
+            var extendedFrameRect = GetExtendedFrameBounds(foregroundWindow);
+            var frameRect = extendedFrameRect - windowRect;
+
+            var bounds = division.Bounds(SystemParameters.WorkArea);
+
+            var x = bounds.Left - frameRect.Left;
+            var y = bounds.Top - frameRect.Top;
+
+            var width = bounds.Width + frameRect.Left - frameRect.Right;
+            var height = bounds.Height + frameRect.Top - frameRect.Bottom;
+
+            SetWindowPos(foregroundWindow, IntPtr.Zero, x, y, width, height, SWP_SHOW_WINDOW);
+
+            // If the window should be maximized then actually maximize it or the title bar will appear slightly out of frame
+            if (bounds.Left <= SystemParameters.WorkArea.Left &&
+                bounds.Top <= SystemParameters.WorkArea.Top &&
+                bounds.Right >= SystemParameters.WorkArea.Right &&
+                bounds.Bottom >= SystemParameters.WorkArea.Bottom)
+            {
+                Console.WriteLine("maximized");
+
+                MaximizeWindow(foregroundWindow);
+            }
+
+            Console.WriteLine(division);
+            Console.WriteLine(bounds);
+            Console.WriteLine();
+
+            LogRect("window", windowRect);
+            LogRect("extended frame", extendedFrameRect);
+
+            Console.WriteLine("frame size:     {0,-5} {1,-5} {2,-5} {3,-5}", frameRect.Left, frameRect.Top, frameRect.Right, frameRect.Bottom);
+            Console.WriteLine("bounds:         {0,-5} {1,-5} {2,-5} {3,-5}", bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+            Console.WriteLine("desired size:   {0,-5} {1,-5} {2,-5} {3,-5}", x, y, width, height);
+
+            var afterWindowRect = GetWindowRect(foregroundWindow);
+            var afterExtendedFrameRect = GetExtendedFrameBounds(foregroundWindow);
+
+            LogRect("new size", afterWindowRect);
+            LogRect("new extended", afterExtendedFrameRect);
+            LogRect("difference", bounds - afterExtendedFrameRect);
+
+            Console.WriteLine();
+        }
+
         [DllImport("user32.dll")]
         internal static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
@@ -67,10 +121,10 @@ namespace WindowPainless
         internal static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         [DllImport("user32.dll")]
-        internal static extern IntPtr GetForegroundWindow();
+        private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int width, int height, uint uFlags);
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int width, int height, uint uFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool GetWindowRect(IntPtr hWnd, out InteropRectangle lpRect);
@@ -80,6 +134,9 @@ namespace WindowPainless
 
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private static void LogRect(string prefix, InteropRectangle rect)
+            => Console.WriteLine($"{prefix + ":", -15} {rect.Left, -5} {rect.Top, -5} {rect.Right, -5} {rect.Bottom, -5}");
 
         [StructLayout(LayoutKind.Sequential)]
         public struct InteropRectangle

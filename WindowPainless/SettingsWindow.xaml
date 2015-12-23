@@ -1,0 +1,32 @@
+﻿<Window x:Class="WindowPainless.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:p="clr-namespace:WindowPainless.Properties"
+        mc:Ignorable="d"
+        Title="Settings" Height="480" Width="640" ShowInTaskbar="False" Loaded="Window_Loaded">
+    <Grid>
+        <Label Content="Maximum rows:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="113"/>
+        <Label Content="Maximum columns:" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Height="26"/>
+
+        <xctk:IntegerUpDown x:Name="maximumRows" Margin="10,41,0,0" Maximum="7" Minimum="1" ValueChanged="maximumRows_ValueChanged" Value="{Binding Source={x:Static p:Settings.Default}, Path=MaximumRows, Mode=TwoWay}" HorizontalAlignment="Left" Width="87" Height="26" VerticalAlignment="Top" />
+        <xctk:IntegerUpDown x:Name="maximumColumns" Margin="10,103,0,0" Maximum="7" Minimum="1" ValueChanged="maximumColumns_ValueChanged" Value="{Binding Source={x:Static p:Settings.Default}, Path=MaximumColumns, Mode=TwoWay}" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="87"/>
+
+        <Rectangle Margin="128,10,10,10" Fill="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" Grid.ColumnSpan="2"/>
+
+        <ScrollViewer Margin="128,10,10,10" Grid.ColumnSpan="2">
+            <WrapPanel x:Name="gridWrapPanel" />
+        </ScrollViewer>
+
+        <tb:TaskbarIcon
+            x:Name="myNotifyIcon"
+            Visibility="Visible"
+            ToolTipText="WindowPainless"
+            IconSource="/Images/TrayIcon.ico"
+            MenuActivation="LeftOrRightClick"
+            PopupActivation="DoubleClick" Grid.ColumnSpan="2" />
+    </Grid>
+</Window>

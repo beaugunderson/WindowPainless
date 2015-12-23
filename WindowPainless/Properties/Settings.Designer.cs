@@ -22,5 +22,40 @@ namespace WindowPainless.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int MaximumColumns {
+            get {
+                return ((int)(this["MaximumColumns"]));
+            }
+            set {
+                this["MaximumColumns"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int MaximumRows {
+            get {
+                return ((int)(this["MaximumRows"]));
+            }
+            set {
+                this["MaximumRows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::WindowPainless.DivisionPreferences DivisionPreferences {
+            get {
+                return ((global::WindowPainless.DivisionPreferences)(this["DivisionPreferences"]));
+            }
+            set {
+                this["DivisionPreferences"] = value;
+            }
+        }
     }
 }

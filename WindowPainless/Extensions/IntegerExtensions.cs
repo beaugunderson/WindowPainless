@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace WindowPainless
+namespace WindowPainless.Extensions
 {
     public static class IntegerExtensions
     {
